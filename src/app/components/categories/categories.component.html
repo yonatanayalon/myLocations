@@ -1,0 +1,7 @@
+<div class="category-list-container">
+  <ul class="category-container">
+    <li *ngFor="let category of categories;let idx = index" (click)="selectCategory(idx)" [ngClass]="{'selected': (selectedCategoryIndex === idx)}" class="border">
+      {{category.name}}
+    </li>
+  </ul>
+</div>

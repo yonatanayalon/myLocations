@@ -1,0 +1,74 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalContent.title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="registerForm">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': formControls.name.errors }" required [attr.disabled]="modalContent.actionName === 'remove' ? '' : null" />
+        <div *ngIf="formControls.name.errors" class="invalid-feedback">
+          <div *ngIf="formControls.name.errors.required">Name is required</div>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="formControls.address">
+        <label>Address</label>
+        <input type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': formControls.address.errors }" required [attr.disabled]="modalContent.actionName === 'remove' ? '' : null"/>
+        <div *ngIf="formControls.address.errors" class="invalid-feedback">
+          <div *ngIf="formControls.address.errors.required">Address is required</div>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="formControls.coordinates">
+        <label>Coordinates</label>
+        <input type="text" formControlName="coordinates" class="form-control" [ngClass]="{ 'is-invalid': formControls.coordinates.errors }" required [attr.disabled]="modalContent.actionName === 'remove' ? '' : null"/>
+        <div *ngIf="formControls.coordinates.errors" class="invalid-feedback">
+          <div *ngIf="formControls.coordinates.errors.required">Coordinates are required</div>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="formControls.category">
+        <label>Categories</label>
+        <div class="form-group">
+          <input type="text" formControlName="category" class="invisible" required/>
+          <select class="form-control" (change)="selectCategory($event.target.value)" [ngClass]="{ 'is-invalid': formControls.category.errors }" [attr.disabled]="modalContent.actionName === 'remove' ? '' : null">
+            <option [ngValue]="null" disabled>{{ selectedModalCategory }}</option>
+            <option *ngFor="let category of modalContent.categories"
+                    [value]="category.name">
+              {{category.name}}
+            </option>
+          </select>
+          <div *ngIf="formControls.category.errors" class="invalid-feedback">
+            <div *ngIf="formControls.category.errors.required">Category is required</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="saveModal(modal, modalContent)" [disabled]="registerForm.invalid">{{modalContent.actionName}}</button>
+  </div>
+</ng-template>
+
+<div class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="actions-container container">
+    <a class="navbar-brand" href="/{{ pageName }}">{{ pageName }}</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <span class="nav-link">View <span class="sr-only">(current)</span></span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" (click)="openModal('add', 'Save')">Add</span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" [ngClass]="{'disabled': !selectedItem}" (click)="!selectedItem || openModal('remove')">Remove</span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link" [ngClass]="{'disabled': !selectedItem}" (click)="!selectedItem || openModal('edit')">Edit</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

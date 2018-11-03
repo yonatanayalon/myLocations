@@ -1,0 +1,29 @@
+:host {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.nav-link {
+  cursor: pointer;
+
+  &.disabled {
+    cursor: default;
+  }
+}
+
+.form-group {
+  .invisible {
+    // Minimize dropdown input space (when invisible)
+    padding: 0;
+    border: 0;
+    font-size: 0;
+    display: inherit;
+  }
+}
+
+.modal-title {
+  text-transform: capitalize;
+}

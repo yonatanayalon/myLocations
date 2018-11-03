@@ -1,0 +1,56 @@
+<div class="location-list-container">
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-default" [ngClass]="{'btn-primary': locationsSorting['alphabetical']}" (click)="showLocationsAlphbetical()">Alphabetical locations</button>
+    <button class="btn btn-default" [ngClass]="{'btn-primary': locationsSorting['groupByCategory']}" (click)="showLocationsGroupedByCategoryOpen()">All locations (Alphabetically), grouped by category (Alphabetically)</button>
+    <button class="btn btn-default" [ngClass]="{'btn-primary': locationsSorting['groupByCategoryClose']}" (click)="showLocationsGroupedByCategoryClose()">Alphabetical locations, per category (Alphabetically)</button>
+  </div>
+  <div class="all-locations">
+    <ul class="location-container">
+      <ng-container *ngIf="locationsSorting['alphabetical']">
+        <li *ngFor="let location of locations" (click)="selectLocation(location.name)" [ngClass]="{'selected': (selectedLocationName === location.name)}" class="border">
+        <span class="col">
+          <strong>Name: </strong>
+          <span>{{location.name}}</span>
+        </span>
+          <span class="col">
+          <strong>Address: </strong>
+          <span>{{location.address}}</span>
+        </span>
+          <span class="col">
+          <strong>Coordinates: </strong>
+          <span>{{location.coordinates}}</span>
+        </span>
+          <span class="col">
+          <strong>Category: </strong>
+          <span>{{location.category}}</span>
+        </span>
+        </li>
+      </ng-container>
+      <ng-container *ngIf="locationsSorting['groupByCategory'] || locationsSorting['groupByCategoryClose']">
+        <li *ngFor="let category of locationsByCategory">
+          <strong [ngClass]="{'mouse-cursor': locationsSorting['groupByCategoryClose']}" (click)="locationsSorting['groupByCategoryClose'] ? openCategoryLocations(category[0]) : ''">Category: {{ category[0] }}</strong>
+          <ul [ngClass]="{'d-none': locationsSorting['groupByCategoryClose'] && (!selectedCategoryName || (selectedCategoryName && (category[0] !== selectedCategoryName) ))}">
+            <li *ngFor="let location of category[1]" (click)="selectLocation(location.name)" [ngClass]="{'selected': (selectedLocationName === location.name)}" class="border">
+              <span class="col">
+                <strong>Name: </strong>
+                <span>{{location.name}}</span>
+              </span>
+              <span class="col">
+                <strong>Address: </strong>
+                <span>{{location.address}}</span>
+              </span>
+              <span class="col">
+                <strong>Coordinates: </strong>
+                <span>{{location.coordinates}}</span>
+              </span>
+              <span class="col">
+                <strong>Category: </strong>
+                <span>{{location.category}}</span>
+              </span>
+            </li>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>
